@@ -1,30 +1,48 @@
 // express server
-
 const express = require('express')
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const keys = require('./keys')
+const User = require('./models/User')
 const app = express()
-const port = 8080
-
+const port = process.env.Port || 4000;
+app.use(express.static("public"));
+// same as app.use("/", express.static("public"));
 app.use(bodyParser.json());
-app.use('/', express.static("public"));
+//connecting mongoDB or in this case mongoDB Atlas
+mongoose.connect(keys.mongoDBUrl, {useNewUrlParser: true}).then((err) =>  console.log("DB connected"));
 
-app.get('/', function (req, res) {
-res.send('Hello!!')
-})
+// app.get('/', (req, res) => res.send('Bonjour, Jethro!'))
 
-app.post('/api', function (req, res){
+
+app.post('/api', (req, res) => {
+    //request can send over queries, paramaters, Json, files..
+    //usually you are sending out queries and params
     const userName = req.body.username;
-    const userId = req.body.id;
     const message = req.body.message;
-    console.log("userName");
-    const reply = `${userName} with id of ${userId} is saying ${message}`
-    res.send(reply);
+    const data = {
+        username: userName,
+        message: message
+    }
+    console.log(data);
+    const user = new User(data)
+    user.save().then(() => {
+        console.log(`New user created`)
+        res.send(data);
+    })
+
+   
 })
 
-app.get("/showProfile/:username", function(req, res) {
-    const user = req.params.username;
-    console.log(user);
-    res.send("show profile working");
-})   
+app.get('/getallusers', (req, res) =>{
+    res.send("data");
+})
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.get('/showprofile/:username', (req, res) => {
+    const user = req.params.username;
+    res.send('show Profile is working')
+    console.log(user)
+})
+
+
+app.listen(port, () => console.log(`App is live currently listening on port ${port}!`))
