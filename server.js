@@ -5,14 +5,14 @@ const mongoose = require('mongoose');
 const keys = require('./keys')
 const User = require('./models/User')
 const app = express()
-const port = process.env.Port || 4000;
+const port = process.env.Port || 8080;
 app.use(express.static("public"));
 // same as app.use("/", express.static("public"));
 app.use(bodyParser.json());
 //connecting mongoDB or in this case mongoDB Atlas
 mongoose.connect(keys.mongoDBUrl, {useNewUrlParser: true}).then((err) =>  console.log("DB connected"));
 
-// app.get('/', (req, res) => res.send('Bonjour, Jethro!'))
+
 
 
 app.post('/api', (req, res) => {

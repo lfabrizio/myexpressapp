@@ -1,36 +1,33 @@
-function getUserInfo(){
-    const input = document.getElementById("userName").value;
-    
-    const url = "/showprofile/" + input;
-    axios.get(url)
-    .then(response => {
-        document.getElementById("userInfo").innerHTML = response.data;
-    })
-}
+const getUserInfo = () => {
+  const input = document.querySelector("#userName").value;
+  console.log(input)
 
-function handleSubmit(){
-    const userName = document.getElementById("user-name").value;
-    const userId = document.getElementById("user-id").value;
-     const message = document.getElementById("message").value;
-     console.log(userName, userId, message);
-     const payload = {
-         username: userName,
-         id: userId,
-         message
-     }
-     
-     
-     //making a post request with axios
-     axios.post("/api/", payload)
-     .then(response => {
-         console.log(response.data)
-     })
-}
+  //    console.log(`ES6 ${input}`)
+  const url = "/showprofile/" + input;
 
-    function getAllUsers() {
-        axios.get("/getallusers/")
+  axios.get(url).then(response => {
+    document.querySelector("#userInfo").innerHTML = response.data;
+  });
+};
+
+const handleSubmit = () => {
+  const username = document.querySelector("#user-Name").value;
+  console.log(username)
+  const id = document.querySelector("#userId").value;
+  const message = document.querySelector("#userMsg").value;
+
+  const url2 = "api/";
+
+  axios.post(url2, {  username, id, message }).then(response => {
+    console.log(response);
+    document.querySelector("#submitInfo").innerHTML = response.data;
+  });
+};
+
+const getAllUsers = () => {
+    const url3 = '/getallusers'; 
+    axios.get(url3)
         .then(response => {
-            document.getElementById("result").innerHTML = 
-            response.data
+            document.querySelector('#result').innerHTML = JSON.stringify(response.data)
         })
-    }
+}
