@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser');
 const keys = require('./keys');
 const User = require('./models/User');
+const api = require('./routes/api');
 const app = express()
 const port = 8080
 
@@ -16,33 +17,14 @@ app.get('/', function (req, res) {
   res.send('Hello World!')
 })
 
-app.post('/api', function (req, res) {
-  const userName = req.body.username;
-  const message = req.body.message;
 
-  const data = {
-    username: userName,
-    message: message
-  }
-  console.log(data);
-
-  const user = new User(data)
-  user.save().then(() => {
-    console.log("New user created");
-    res.send(data);
-  })
+app.use('/api', api);
 
 
-})
 
-app.get("/getallusers", function (req, res) {
-  User
-    .find()
-    .then(results => {
-      console.log(results)
-      res.send(results)
-    })
-})
+
+
+
 
 
 

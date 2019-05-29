@@ -1,6 +1,6 @@
 function getUserInfo() {
   const input = document.getElementById("userName").value;
-  const url = "/showprofile/" + input;
+  const url = "/api/showprofile/" + input;
   axios.get(url)
     .then(response => {
       document.getElementById("userInfo").innerHTML = JSON.stringify(response.data);
@@ -27,7 +27,7 @@ function handleSubmit() {
 }
 
 function getAllUsers() {
-  axios.get("/getallusers/")
+  axios.get("/api/getallusers/")
     .then(response => {
       document.getElementById("result").innerHTML = JSON.stringify(response.data)
     })
